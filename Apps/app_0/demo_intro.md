@@ -1,0 +1,1 @@
+O trabalho abaixo tem como objetivo a exploração do dataset de Plankton. O Scatterplot é resultado do algoritmo t-SNE. Basicamente, cada ponto simboliza uma imagem no espaço 2D. O quadro da direita é possível visualizar as imagens de cada objeto. Clique em "Saiba Mais" para mais informações de como a ferramenta funciona.

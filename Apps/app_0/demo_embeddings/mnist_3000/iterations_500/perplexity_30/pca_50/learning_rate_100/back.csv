@@ -1,0 +1,6 @@
+,x,y,mannual_label,correct_label
+Digit 2,1.1,1.1,-,Digit 2
+Digit 2,4.1,4.1,-,Digit 2
+Digit 2,4.1,1.1,-,Digit 2
+Digit 2,1.1,4.1,-,Digit 2
+Digit 2,2.123456789,2.1,-,Digit 2
