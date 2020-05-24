@@ -43,7 +43,7 @@ DATA_PATH = PATH.joinpath("data").resolve()
 #     'mnist_3000': pd.read_csv(DATA_PATH.joinpath('mnist_3000_input.csv')).loc[:,:],
 # }
 
-df = pd.read_csv(DATA_PATH.joinpath('data.csv'), encoding='ISO-8859-1').iloc[:,:]
+df = pd.read_csv(DATA_PATH.joinpath('data.csv'), encoding='ISO-8859-1').iloc[10:20,:]
 
 # print ("df", data_dict['mnist_3000'].head())
 
@@ -52,7 +52,9 @@ df = pd.read_csv(DATA_PATH.joinpath('data.csv'), encoding='ISO-8859-1').iloc[:,:
 
 ### Images
 
-images_names = list(np.arange(df.shape[0]))
+# images_names = list(np.arange(df.shape[0]))
+df_all = pd.read_csv(DATA_PATH.joinpath('data.csv'), encoding='ISO-8859-1').iloc[:,:]
+images_names = list(df_all.index)
 l_images_data = []
 for i in range(len(images_names)):
   img = Image.open("data/" + str(images_names[i]) + ".png")
@@ -102,11 +104,10 @@ def generate_thumbnail(image_b64):
 
 
 
-
-
-
 def create_images_layout(qtd_pontos=0, _qtd_cols_figure_2=6, selectedpoints=[1], images_names=images_names, _list_x=None, _list_y=None):
 
+
+  start_time = time.time()
 
   _data = {
       'x': _list_x,
@@ -144,6 +145,10 @@ def create_images_layout(qtd_pontos=0, _qtd_cols_figure_2=6, selectedpoints=[1],
   _df_dict = _df_dict[['x', 'y', 'sizex', 'sizey', 'source', 'opacity', 'xanchor', 'yanchor', 'xref', 'yref']]
   _df_dict = _df_dict.to_dict('records')
 
+  #time_check
+  # esta demorando 18 segundos
+  print("--- %s seconds  CREATE Images---" % (time.time() - start_time))
+
   # print ("_df_dict", _df_dict)
   return _df_dict
 
@@ -153,13 +158,18 @@ def f_selection_check(_df, _selection_1, _selection_2, _memory_1, _memory_2, _fi
   _x_selection = None
   _y_selection = None
 
+
+
+
   # _df['x'] = round(_df['x'], 7)
   # _df['y'] = round(_df['y'], 7)
 
   # Selection_1 vs Memory 1
   if _selection_1 != _memory_1:
     try:
+
       temp_df = pd.DataFrame(_selection_1["points"])
+
       _x_selection = temp_df['x'].values.tolist()
       _y_selection = temp_df['y'].values.tolist()
     except:
@@ -167,6 +177,22 @@ def f_selection_check(_df, _selection_1, _selection_2, _memory_1, _memory_2, _fi
   else:
     None
 
+  # try:
+  #   print("_selection_1[points]", _selection_1["points"])
+  # except:
+  #   pass
+
+  # try:
+  #   print("memory_1", memory_1)
+  # except:
+  #   pass
+
+  # try:
+  #   print("temp_df", temp_df)
+  # except:
+  #   pass
+  # print("memory_1", memory_1)
+  # print("\n\n")
 
 
   # print("AQUI!")
@@ -197,7 +223,7 @@ def f_selection_check(_df, _selection_1, _selection_2, _memory_1, _memory_2, _fi
 
       _x_selection = _df['x'][_df.index.isin(_final_selected_points)].values.tolist()
       _y_selection = _df['y'][_df.index.isin(_final_selected_points)].values.tolist()
-      print("_final_selected_points", _final_selected_points)
+      # print("_final_selected_points", _final_selected_points)
     except:
       print("foi para ca....\n\n")
       temp_df = None
@@ -237,15 +263,18 @@ def f_figure_1(_df, _x_selection, _y_selection):
           _temp.append(val.index.get_loc(_selectedpoints[i]))
     _selectedpoints = _temp
 
+
+
     scatter = go.Scatter(
         name=idx,
         x=val["x"],
         y=val["y"],
         text=val['manual_label'],
         selectedpoints=_selectedpoints,
+        customdata=_selectedpoints,
         textposition="top center",
         mode="markers",
-        marker=dict(size=8, symbol="circle")
+        marker=dict(size=20, symbol="circle")
     )
     l_data.append(scatter)
 
@@ -267,7 +296,10 @@ def f_figure_1(_df, _x_selection, _y_selection):
   )
 
   figure_1 = go.Figure(data=l_data, layout=layout)
-
+  # try:
+  #   print("figure_1", figure_1['data'])
+  # except:
+  #   pass
   return figure_1
 
 def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_data=None):
@@ -298,7 +330,7 @@ def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_dat
 
   # print ("_list_y", _list_y)
   # time_check
-  # print("--- %s seconds figure2 (i) ---" % (time.time() - start_time))
+  print("--- %s seconds figure2 (i) ---" % (time.time() - start_time))
 
   _data = {
       'x_2': _list_x,
@@ -307,7 +339,8 @@ def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_dat
     }
   _df_graph2 = pd.DataFrame(_data)
 
-  _df_graph2.to_csv('here_test.csv')
+  # print("here!!!!")
+  # _df_graph2.to_csv('here_test.csv')
 
 
 
@@ -335,11 +368,11 @@ def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_dat
   _selectedpoints = _temp
   _search = _df.iloc[_selectedpoints].index.values
 
-
+  print("_images_names", _images_names)
   #time_check
-  # print("--- %s seconds  figure2 (ii)---" % (time.time() - start_time))
+  print("--- %s seconds  figure2 (ii)---" % (time.time() - start_time))
 
-  # print("_selectedpoints", _selectedpoints)
+  print("_selectedpoints", _selectedpoints)
   #time_check
   start_time = time.time()
 
@@ -362,7 +395,7 @@ def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_dat
 
   #time_check
   # esta demorando 6 seguindos
-  # print("--- %s seconds  figure2 (iii)---" % (time.time() - start_time))
+  print("--- %s seconds  figure2 (iii)---" % (time.time() - start_time))
 
 
   #time_check
@@ -387,6 +420,7 @@ def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_dat
     indices = _images_names
     sublist = []
 
+
     for i in indices:
         sublist.append(images_data[i])
   except:
@@ -396,7 +430,7 @@ def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_dat
   # print("images_data", images_data)
   # print("_images_names", _images_names)
   # print("sublist", sublist)
-  # print ("sublist", sublist)
+
 
   layout = go.Layout(
       autosize= _autosize,
@@ -423,14 +457,16 @@ def f_figure_2(_df, _x_selection, _y_selection, _qtd_cols_figure_2=6, images_dat
 
   #time_check
   # esta demorando 18 segundos
-  # print("--- %s seconds  figure2 (iv)---" % (time.time() - start_time))
+  print("--- %s seconds  figure2 (iv)---" % (time.time() - start_time))
 
   #time_check
-  # print("--- %s seconds Global---" % (time.time() - global_start_time))
+  print("--- %s seconds Global---" % (time.time() - global_start_time))
 
   # print("len groups", len(groups))
   # print("AQUI!!!!!", layout['height'])
   # print("qtd points!!!!!", len(qtd_selected_points))
+
+  print ("-------------------------------------\n\n")
   return figure_2
 
 
@@ -577,7 +613,6 @@ def create_layout(app):
 
 
 
-
 def demo_callbacks(app):
 
 
@@ -675,6 +710,11 @@ def demo_callbacks(app):
                                     _figure2 = figure2,
                                     _qtd_cols_figure_2=6)
 
+
+        # print("_x_selection", _x_selection)
+        # print("_y_selection", _y_selection)
+        # print("-------------------------------------------")
+
         #time_check
         # print("--- %s seconds ---Callback f_selection_check" % (time.time() - start_time))
 
@@ -712,7 +752,7 @@ def demo_callbacks(app):
 
         #time_check
         # print("--- %s seconds ---Callback (A)" % (time.time() - global_start_time))
-        print("selection1", selection1)
+        # print("selection1", selection1)
         return [figure_1,
                 figure_2,
                 selection1,
@@ -753,6 +793,9 @@ def demo_callbacks(app):
 
         #time_check
         # print("--- %s seconds ---Callback f_selection_check" % (time.time() - start_time))
+        # print("_x_selection", _x_selection)
+        # print("_y_selection", _y_selection)
+        # print("-------------------------------------------")
 
 
         #time_check
@@ -764,7 +807,7 @@ def demo_callbacks(app):
         figure_1 = f_figure_1(_df = _df,
                               _x_selection = _x_selection,
                               _y_selection=_y_selection)
-
+        print("figure_1", figure_1)
         #time_check
         # print("--- %s seconds ---Callback figure1" % (time.time() - start_time))
 
@@ -773,8 +816,8 @@ def demo_callbacks(app):
         #time_check
         start_time = time.time()
 
-        # print("_x_selection", _x_selection)
-        # print("_y_selection", _y_selection)
+        # print("_xOR HEREselection", _y_selection)
+        # print("l_images_data", l_images_data)
 
         figure_2 = f_figure_2(_df = _df,
                               _x_selection = _x_selection,
@@ -794,7 +837,7 @@ def demo_callbacks(app):
         # print("--- %s seconds ---Callback (B)" % (time.time() - global_start_time))
 
         # print("FIGURE 2", figure_2['data'])
-        print("selection1", selection1)
+        # print("selection1", selection1)
         return [figure_1,
                 figure_2,
                 selection1,
@@ -897,7 +940,7 @@ def demo_callbacks(app):
 
 
         # Dataframe atualizado carregado:
-        print ("Aqui")
+        # print ("Aqui")
         _df = pd.read_json(store_df)
         _df['x'] = round(_df['x'], 7)
         _df['y'] = round(_df['y'], 7)
