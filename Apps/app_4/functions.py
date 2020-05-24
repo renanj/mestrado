@@ -65,6 +65,8 @@ def create_images_layout(qtd_pontos=0, _qtd_cols_figure_2=6, selectedpoints=[1],
 
 def f_selection_check(_df,_list_selection, _list_memory, _list_figure):
 
+
+
   _x_selection = None
   _y_selection = None
 
@@ -108,6 +110,100 @@ def f_selection_check(_df,_list_selection, _list_memory, _list_figure):
     None
 
 
+  # Selection_3 vs Memory_3
+  if _list_selection[2] != _list_memory[2]:
+    try:
+      _list_figure[2] = _list_figure[2]['data']
+      _x_selection = []
+      _y_selection = []
+      for i in range(len(_list_figure[2])):
+          _x = []
+          _y = []
+          _selected_points = _list_figure[2][i]['selectedpoints']
+          for ii in range(len(_selected_points)):
+              _x.append(_list_figure[2][i]['x'][_selected_points[ii]])
+              _y.append(_list_figure[2][i]['y'][_selected_points[ii]])
+
+
+
+          _x_temp = _df['x'][
+              (_df['x3'].isin(_x)) &
+              (_df['y3'].isin(_y))
+            ]
+          _x_temp = round(_x_temp,7)
+          _x_selection.append(_x_temp.tolist())
+
+
+          _y_temp = _df['y'][
+              (_df['x3'].isin(_x)) &
+              (_df['y3'].isin(_y))
+            ]
+
+          _y_temp = round(_y_temp,7)
+          _y_selection.append(_y_temp.tolist())
+
+      _t_x = []
+      _t_y = []
+      for i in range(len(_x_selection)):
+          for ii in range(len(_x_selection[i])):
+              _t_x.append(_x_selection[i][ii])
+              _t_y.append(_y_selection[i][ii])
+
+      _x_selection = _t_x
+      _y_selection = _t_y
+
+    except:
+      temp_df = None
+  else:
+    None
+
+  # Selection_4 vs Memory_4
+  if _list_selection[3] != _list_memory[3]:
+    try:
+      _list_figure[3] = _list_figure[3]['data']
+      _x_selection = []
+      _y_selection = []
+      for i in range(len(_list_figure[3])):
+          _x = []
+          _y = []
+          _selected_points = _list_figure[3][i]['selectedpoints']
+          for ii in range(len(_selected_points)):
+              _x.append(_list_figure[3][i]['x'][_selected_points[ii]])
+              _y.append(_list_figure[3][i]['y'][_selected_points[ii]])
+
+
+
+          _x_temp = _df['x'][
+              (_df['x4'].isin(_x)) &
+              (_df['y4'].isin(_y))
+            ]
+          _x_temp = round(_x_temp,7)
+          _x_selection.append(_x_temp.tolist())
+
+
+          _y_temp = _df['y'][
+              (_df['x4'].isin(_x)) &
+              (_df['y4'].isin(_y))
+            ]
+
+          _y_temp = round(_y_temp,7)
+          _y_selection.append(_y_temp.tolist())
+
+      _t_x = []
+      _t_y = []
+      for i in range(len(_x_selection)):
+          for ii in range(len(_x_selection[i])):
+              _t_x.append(_x_selection[i][ii])
+              _t_y.append(_y_selection[i][ii])
+
+      _x_selection = _t_x
+      _y_selection = _t_y
+
+    except:
+      temp_df = None
+  else:
+    None
+
 
   if _x_selection == None:
     _x_selection = _df['x'].values.tolist()
@@ -118,6 +214,7 @@ def f_selection_check(_df,_list_selection, _list_memory, _list_figure):
     _y_selection = _df['y'].values.tolist()
   else:
     None
+
 
   return _x_selection, _y_selection
 
@@ -232,18 +329,13 @@ def f_figure_1(_df, _x_selection, _y_selection, images_data=None):
   try:
     indices = _images_names
     sublist = []
-    print("indices", indices)
     for i in indices:
         sublist.append(images_data[i])
   except:
     sublist = images_data
 
 
-  print("AQUI!")
-  print("_selectedpoints", len(_selectedpoints))
-  print("sublist", len(sublist))
-  print("_list_x", len(_list_x))
-  print("_list_y", len(_list_y))
+
   layout = go.Layout(
       autosize= _autosize,
       height=_height,
@@ -310,7 +402,6 @@ def f_figure_3(_df, _x_selection, _y_selection):
 def f_figure_4(_df, _x_selection, _y_selection):
 
   l_data = []
-  print("figure 4, df", _df.head())
   groups = _df.groupby('manual_label')
 
   for idx, val in groups:

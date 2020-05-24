@@ -35,7 +35,7 @@ import functions as demo_f
 ## dataFrame:
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
-df = pd.read_csv(DATA_PATH.joinpath('data.csv'), encoding='ISO-8859-1').iloc[:,:]
+df = pd.read_csv(DATA_PATH.joinpath('data.csv'), encoding='ISO-8859-1').iloc[:6,:]
 
 
 ## Load Images in Store:
@@ -292,8 +292,6 @@ def demo_callbacks(app):
     _list_memory = [memory0, memory1, memory3, memory4]
     _list_figure = [None,figure1, figure3, figure4]
 
-
-
     #---------------------------------------------------------------------------------------------------------------------
 
     if n_clicks == 0:
@@ -321,8 +319,6 @@ def demo_callbacks(app):
                                     _list_memory=_list_memory,
                                     _list_figure=_list_figure)
 
-        print("_x_selection", _x_selection)
-        print("_y_selection", _y_selection)
 
 
         figure_0 = demo_f.f_figure_0(_df = df,
@@ -363,15 +359,14 @@ def demo_callbacks(app):
       else:
         # Dataframe atualizado carregado:
         _df = pd.read_json(store_df)
+        _df['x'] = round(_df['x'], 7)
+        _df['y'] = round(_df['y'], 7)
 
-        df['x'] = round(df['x'], 7)
-        df['y'] = round(df['y'], 7)
+        _df['x3'] = round(_df['x3'], 7)
+        _df['y3'] = round(_df['y3'], 7)
 
-        df['x3'] = round(df['x3'], 7)
-        df['y3'] = round(df['y3'], 7)
-
-        df['x4'] = round(df['x4'], 7)
-        df['y4'] = round(df['y4'], 7)
+        _df['x4'] = round(_df['x4'], 7)
+        _df['y4'] = round(_df['y4'], 7)
 
 
 
@@ -390,14 +385,12 @@ def demo_callbacks(app):
                               _y_selection=_y_selection)
 
 
-        print("_x_selection", _x_selection)
-        print("_y_selection", _y_selection)
-
         figure_1 = demo_f.f_figure_1(_df = _df,
                               _x_selection = _x_selection,
                               _y_selection= _y_selection,
                               images_data=l_images_data)
-        df_store_updated = _df.to_json()
+
+
 
 
         figure_3 = demo_f.f_figure_3(_df = _df,
@@ -409,6 +402,7 @@ def demo_callbacks(app):
                               _x_selection = _x_selection,
                               _y_selection = _y_selection)
 
+        df_store_updated = _df.to_json()
 
         return [figure_0,
                 figure_1,
@@ -431,16 +425,16 @@ def demo_callbacks(app):
 
         # Dataframe atualizado carregado:
         _df = pd.read_json(store_df)
-        df['x'] = round(df['x'], 7)
-        df['y'] = round(df['y'], 7)
+        _df['x'] = round(_df['x'], 7)
+        _df['y'] = round(_df['y'], 7)
 
-        df['x3'] = round(df['x3'], 7)
-        df['y3'] = round(df['y3'], 7)
+        _df['x3'] = round(_df['x3'], 7)
+        _df['y3'] = round(_df['y3'], 7)
 
-        df['x4'] = round(df['x4'], 7)
-        df['y4'] = round(df['y4'], 7)
+        _df['x4'] = round(_df['x4'], 7)
+        _df['y4'] = round(_df['y4'], 7)
 
-        if selection0 == None and selection1 == None:
+        if selection0 == None and selection1 == None and selection3 == None and selection4 == None:
           df_store_updated = _df.to_json()
           n_clicks_memory = n_clicks_memory + 1
 
@@ -516,16 +510,16 @@ def demo_callbacks(app):
 
 
         # Dataframe atualizado carregado:
-        # print ("Aqui")
+
         _df = pd.read_json(store_df)
-        df['x'] = round(df['x'], 7)
-        df['y'] = round(df['y'], 7)
+        _df['x'] = round(_df['x'], 7)
+        _df['y'] = round(_df['y'], 7)
 
-        df['x3'] = round(df['x3'], 7)
-        df['y3'] = round(df['y3'], 7)
+        _df['x3'] = round(_df['x3'], 7)
+        _df['y3'] = round(_df['y3'], 7)
 
-        df['x4'] = round(df['x4'], 7)
-        df['y4'] = round(df['y4'], 7)
+        _df['x4'] = round(_df['x4'], 7)
+        _df['y4'] = round(_df['y4'], 7)
 
 
         _x_selection, _y_selection = demo_f.f_selection_check(_df=_df,
