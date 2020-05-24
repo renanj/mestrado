@@ -488,12 +488,12 @@ def demo_callbacks(app):
                               images_data=l_images_data)
 
 
-        figure_3 = demo_f.f_figure_0(_df = _df,
+        figure_3 = demo_f.f_figure_3(_df = _df,
                               _x_selection = _x_selection,
                               _y_selection = _y_selection)
 
 
-        figure_4 = demo_f.f_figure_0(_df = _df,
+        figure_4 = demo_f.f_figure_4(_df = _df,
                               _x_selection = _x_selection,
                               _y_selection = _y_selection)
 
@@ -548,12 +548,12 @@ def demo_callbacks(app):
         df_store_updated = _df.to_json()
 
 
-        figure_3 = demo_f.f_figure_0(_df = _df,
+        figure_3 = demo_f.f_figure_3(_df = _df,
                               _x_selection = _x_selection,
                               _y_selection = _y_selection)
 
 
-        figure_4 = demo_f.f_figure_0(_df = _df,
+        figure_4 = demo_f.f_figure_4(_df = _df,
                               _x_selection = _x_selection,
                               _y_selection = _y_selection)
 

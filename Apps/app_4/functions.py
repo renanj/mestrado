@@ -310,6 +310,7 @@ def f_figure_3(_df, _x_selection, _y_selection):
 def f_figure_4(_df, _x_selection, _y_selection):
 
   l_data = []
+  print("figure 4, df", _df.head())
   groups = _df.groupby('manual_label')
 
   for idx, val in groups:
